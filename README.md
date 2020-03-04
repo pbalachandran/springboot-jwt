@@ -1,18 +1,14 @@
 Springboot JWT
 --------------
-
 Taken from: https://bezkoder.com/spring-boot-jwt-authentication/
 
 
 Postgres Setup
 --------------
-
 a. Install the Postgres CLI 
-
 brew install postgres
 
 b. From command line, create db, user
-
 createdb test-db
 createuser security
 
