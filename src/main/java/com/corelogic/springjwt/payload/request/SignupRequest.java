@@ -1,4 +1,4 @@
-package com.bezkoder.springjwt.payload.request;
+package com.corelogic.springjwt.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

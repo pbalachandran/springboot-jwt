@@ -1,4 +1,4 @@
-package com.bezkoder.springjwt.security.services;
+package com.corelogic.springjwt.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

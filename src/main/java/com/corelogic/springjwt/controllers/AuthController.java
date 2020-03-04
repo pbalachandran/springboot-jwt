@@ -1,21 +1,21 @@
-package com.bezkoder.springjwt.controllers;
+package com.corelogic.springjwt.controllers;
 
-import com.bezkoder.springjwt.models.Role;
-import com.bezkoder.springjwt.models.User;
-import com.bezkoder.springjwt.payload.request.LoginRequest;
-import com.bezkoder.springjwt.payload.request.SignupRequest;
-import com.bezkoder.springjwt.payload.response.JwtResponse;
-import com.bezkoder.springjwt.payload.response.MessageResponse;
-import com.bezkoder.springjwt.repository.RoleRepository;
-import com.bezkoder.springjwt.repository.UserRepository;
-import com.bezkoder.springjwt.security.jwt.JwtUtils;
-import com.bezkoder.springjwt.security.services.UserDetailsImpl;
+import com.corelogic.springjwt.models.Constants;
+import com.corelogic.springjwt.models.Role;
+import com.corelogic.springjwt.models.User;
+import com.corelogic.springjwt.payload.request.LoginRequest;
+import com.corelogic.springjwt.payload.request.SignupRequest;
+import com.corelogic.springjwt.payload.response.JwtResponse;
+import com.corelogic.springjwt.payload.response.MessageResponse;
+import com.corelogic.springjwt.repository.RoleRepository;
+import com.corelogic.springjwt.repository.UserRepository;
+import com.corelogic.springjwt.security.jwt.JwtUtils;
+import com.corelogic.springjwt.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,12 +34,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
-
-    private Role ROLE_ADMIN = Role.builder().name("ROLE_ADMIN").build();
-    private Role ROLE_USER = Role.builder().name("ROLE_USER").build();
-    private Role ROLE_MODERATOR = Role.builder().name("ROLE_MODERATOR").build();
-
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -58,8 +52,8 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -92,28 +86,32 @@ public class AuthController {
 
         // Create new user's account
         User user = User
-                .builder()
-                .username(signUpRequest.getUsername())
-                .email(signUpRequest.getEmail())
-                .password(encoder.encode(signUpRequest.getPassword()))
-                .build();
+				.builder()
+				.username(signUpRequest.getUsername())
+				.email(signUpRequest.getEmail())
+				.password(encoder.encode(signUpRequest.getPassword()))
+				.build();
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            roles.add(ROLE_USER);
+            Role userRole = Role.builder().name(Constants.ROLE_USER).build();
+            roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        roles.add(ROLE_ADMIN);
+                        Role adminRole = Role.builder().name(Constants.ROLE_ADMIN).build();
+                        roles.add(adminRole);
                         break;
                     case "mod":
-                        roles.add(ROLE_MODERATOR);
+                        Role modRole = Role.builder().name(Constants.ROLE_MODERATOR).build();
+                        roles.add(modRole);
                         break;
                     default:
-                        roles.add(ROLE_USER);
+                        Role userRole = Role.builder().name(Constants.ROLE_USER).build();
+                        roles.add(userRole);
                 }
             });
         }

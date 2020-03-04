@@ -1,7 +1,7 @@
-package com.bezkoder.springjwt.security.services;
+package com.corelogic.springjwt.security.services;
 
-import com.bezkoder.springjwt.models.User;
-import com.bezkoder.springjwt.repository.UserRepository;
+import com.corelogic.springjwt.models.User;
+import com.corelogic.springjwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
